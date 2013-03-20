@@ -45,16 +45,22 @@ public class UserInitializeReceiver extends BroadcastReceiver {
         addWallpapers(resources, packageName, R.array.extra_wallpapers, list);
         WallpaperManager wpm = (WallpaperManager) context.getSystemService(
                 Context.WALLPAPER_SERVICE);
-        for (int i=1; i<list.size(); i++) {
-            int resid = list.get(i);
-            if (!wpm.hasResourceWallpaper(resid)) {
-                try {
-                    wpm.setResource(resid);
-                } catch (IOException e) {
-                }
-                return;
-            }
+        //hasResourceWallpaper is available on 4.2+, so just set wallpaper to use the first one available
+        try {
+            wpm.setResource(list.get(0));
+        } catch (IOException e) {
         }
+
+//        for (int i=1; i<list.size(); i++) {
+//            int resid = list.get(i);
+//            if (!wpm.hasResourceWallpaper(resid)) {
+//                try {
+//                    wpm.setResource(resid);
+//                } catch (IOException e) {
+//                }
+//                return;
+//            }
+//        }
     }
 
     private void addWallpapers(Resources resources, String packageName, int resid,
